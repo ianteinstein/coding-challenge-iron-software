@@ -16,11 +16,18 @@ namespace coding_challenge_iron_software
             {
                 Console.WriteLine("Please input phone pad");
                 var input = Console.ReadLine();
-                var resultInfo = OldPhonePad(input);
-
                 Console.WriteLine("===========================");
-                Console.WriteLine(resultInfo.IsValid ? "Result is valid" : "Result is invalid");
-                Console.WriteLine(resultInfo.Text);
+                try
+                {
+                    var resultInfo = OldPhonePad(input);
+                    Console.WriteLine(resultInfo.IsValid ? "Result is valid" : "Result is invalid");
+                    Console.WriteLine(resultInfo.Text);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Internal Error: {ex.Message}");
+                }
+                
                 Console.WriteLine();
                 Console.WriteLine("Try again? Please input y/Y or n/N and Press Enter");
                 var tryAgain = Console.ReadLine();
