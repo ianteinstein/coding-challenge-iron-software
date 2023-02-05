@@ -25,7 +25,7 @@ namespace coding_challenge_iron_software
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Internal Error: {ex.Message}");
+                    Console.WriteLine(ex);
                 }
                 
                 Console.WriteLine();

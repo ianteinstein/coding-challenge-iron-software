@@ -15,40 +15,65 @@ namespace CoreLogic
 
         public ResultInfo ValidationPhonePadTxt(string input)
         {
-            var resultInfo = new ResultInfo(true);
-            Regex regex = new Regex(@"^[#*0-9 ]+$");
-            if (!regex.IsMatch(input))
+            try
             {
-                resultInfo.IsValid = false;
-            }
+                var resultInfo = new ResultInfo(true);
+                Regex regex = new Regex(@"^[#*0-9 ]+$");
+                if (!regex.IsMatch(input))
+                {
+                    resultInfo.IsValid = false;
+                }
 
-            if (!input.EndsWith("#"))
+                if (!input.EndsWith("#"))
+                {
+                    resultInfo.IsValid = false;
+                }
+
+                if (!resultInfo.IsValid)
+                {
+                    resultInfo.Text = "Input is invalid";
+                }
+
+                return resultInfo;
+            }
+            catch (Exception ex)
             {
-                resultInfo.IsValid = false;
+                Console.WriteLine(ex);
+                return new ResultInfo()
+                {
+                    IsValid = false,
+                    Text = $"Error: {ex.Message}"
+                };
             }
-
-            if (!resultInfo.IsValid)
-            {
-                resultInfo.Text = "Input is invalid";
-            }
-
-            return resultInfo;
         }
 
         public ResultInfo GetResultString(string input)
         {
-            var resultInfo = ValidationPhonePadTxt(input);
-            if (resultInfo.IsValid)
+            try
             {
-                var cleanString = RemoveInvalidStrint(input);
-                var phonePads = GetDuplicateStringAndCount(cleanString);
-                foreach (var phonePad in phonePads)
+                var resultInfo = ValidationPhonePadTxt(input);
+                if (resultInfo.IsValid)
                 {
-                    var charToAdd = _phonePadDictionary.CharDictionary[(phonePad.CharInput, phonePad.CharInputCnt)];
-                    resultInfo.Text = $"{resultInfo.Text}{charToAdd}";
+                    var cleanString = RemoveInvalidStrint(input);
+                    var phonePads = GetDuplicateStringAndCount(cleanString);
+                    foreach (var phonePad in phonePads)
+                    {
+                        var charToAdd = _phonePadDictionary.CharDictionary[(phonePad.CharInput, phonePad.CharInputCnt)];
+                        resultInfo.Text = $"{resultInfo.Text}{charToAdd}";
+                    }
                 }
+
+                return resultInfo;
             }
-            return resultInfo;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new ResultInfo()
+                {
+                    IsValid = false,
+                    Text = $"Error: {ex.Message}"
+                };
+            }
         }
 
         private string RemoveInvalidStrint(string input)
